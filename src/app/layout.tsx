@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/providers/query-provider";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const manrope = Manrope({
   subsets: ["latin"]
@@ -18,14 +19,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={manrope.className}
-      >
-        <QueryProvider>
-          {children}
-        </QueryProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={manrope.className}
+        >
+          <QueryProvider>
+            {children}
+          </QueryProvider>
+        </body>
+      </html>
+      </ClerkProvider>
   );
 }

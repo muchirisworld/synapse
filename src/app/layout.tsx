@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
+import QueryProvider from "@/providers/query-provider";
 
 const manrope = Manrope({
   subsets: ["latin"]
@@ -21,7 +22,9 @@ export default function RootLayout({
       <body
         className={manrope.className}
       >
-        {children}
+        <QueryProvider>
+          {children}
+        </QueryProvider>
       </body>
     </html>
   );

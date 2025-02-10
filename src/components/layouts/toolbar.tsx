@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/tooltip';
 import { ModeToggle } from '@/components/elements/mode-toggle';
 import { Button } from '../ui/button';
+import ProfileCard from '../elements/profile-card';
 
 const Toolbar = () => {
   return (
@@ -45,7 +46,7 @@ const ToolbarItems = () => {
                 </TooltipProvider>
     
                 <div className='flex items-center justify-center'>
-                    <UserButton />
+                    <ProfileCard />
                 </div>
             </nav>
         </aside>

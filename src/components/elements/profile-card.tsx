@@ -39,7 +39,6 @@ const ProfileCard = async () => {
             </Link>
             <Link
                 href={'/workspace'}
-    	        
             >
                 <DropdownMenuItem className='cursor-pointer'>
                     <GearIcon />

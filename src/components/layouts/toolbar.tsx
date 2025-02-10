@@ -9,6 +9,8 @@ import {
 import { ModeToggle } from '@/components/elements/mode-toggle';
 import { Button } from '../ui/button';
 import ProfileCard from '../elements/profile-card';
+import Hint from '../elements/hint';
+import { currentUser } from '@clerk/nextjs/server';
 
 const Toolbar = () => {
   return (
@@ -22,7 +24,8 @@ const Toolbar = () => {
 
 export default Toolbar
 
-const ToolbarItems = () => {
+const ToolbarItems = async () => {
+    const user = await currentUser();
     return (
         <aside className='z-20 flex h-full flex-col'>
             <nav className="px-1 py-4">
@@ -45,9 +48,15 @@ const ToolbarItems = () => {
                     </Tooltip>
                 </TooltipProvider>
     
-                <div className='flex items-center justify-center'>
-                    <ProfileCard />
-                </div>
+                <Hint
+                    label={user?.fullName ?? 'Unknown User'}
+                    align='center'
+                    side='right'
+                >
+                    <div className=''>
+                        <ProfileCard />
+                    </div>
+                </Hint>
             </nav>
         </aside>
     )

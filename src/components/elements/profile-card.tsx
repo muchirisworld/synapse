@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import {
     DropdownMenu,
@@ -11,18 +13,34 @@ import AvatarButton from './avatar-button';
 import { currentUser, User } from '@clerk/nextjs/server';
 import { PersonIcon, GearIcon, ExitIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
+import useConfirm from '@/hooks/use-confirm';
+import { useClerk, useUser } from '@clerk/nextjs';
 
-const ProfileCard = async () => {
-    const user = await currentUser();
+const ProfileCard = () => {
+    const { user } = useUser();
+    const { signOut } = useClerk();
+    const [ConfirmDialog, confirm] = useConfirm({
+        title: "Are you sure?",
+        message: "You will be signed out of your account when this action is completed"
+    });
+
+    const handleSignOut = async () => {
+        const ok = await confirm();
+        if (!ok) return;
+        signOut({ redirectUrl: '/' });
+    }
 
   return (
+    <>
+    <ConfirmDialog />
+
     <DropdownMenu>
         <DropdownMenuTrigger>
-            <ProfileAvatar user={user} />
+            <ProfileAvatar  />
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' side='right'>
             <DropdownMenuLabel className='flex items-center gap-2'>
-                <ProfileAvatar user={user} />
+                <ProfileAvatar />
                 <div className="leading-tight">
                     <h3 className="">{user?.emailAddresses[0].emailAddress}</h3>
                     <p className="text-muted-foreground text-sm">{user?.fullName}</p>
@@ -46,22 +64,21 @@ const ProfileCard = async () => {
                 </DropdownMenuItem>
             </Link>
             
-            <DropdownMenuItem className='cursor-pointer'>
+            <DropdownMenuItem className='cursor-pointer' onClick={handleSignOut}>
                 <ExitIcon />
                 Sign Out
             </DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>
+    </>
   )
 }
 
 export default ProfileCard
 
-type ProfileAvatarProps = {
-    user: User | null;
-}
+const ProfileAvatar = () => {
+    const { user } = useUser();
 
-const ProfileAvatar = async ({ user }: ProfileAvatarProps) => {
   return (
     <AvatarButton
         alt={user?.fullName ?? ""}

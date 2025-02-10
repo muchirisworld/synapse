@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, JSX } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -19,7 +19,7 @@ type ConfirmProps = {
 
 const useConfirm = (
     { title, message }: ConfirmProps
-) => {
+): [() => JSX.Element, () => Promise<unknown>] => {
     const [promise, setPromise] = useState<{ resolve: (value: boolean) => void } | null>(null);
 
     const confirm = () => new Promise((resolve, reject) => {

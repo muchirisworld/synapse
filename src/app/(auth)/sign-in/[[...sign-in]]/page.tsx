@@ -113,20 +113,22 @@ export default function SignInPage() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => handleProviderSignIn("github")}
-              >
-                <GitHubLogoIcon className="mr-2 h-4 w-4" />
-                Github
-              </Button>
-            {/* <Link href={getProviderLoginUrl('google')}> */}
-              <Button variant="outline" className="w-full">
-                <GoogleIcon />
-                Google
-              </Button>
-            {/* </Link> */}
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => handleProviderSignIn("github")}
+            >
+              <GitHubLogoIcon className="mr-2 h-4 w-4" />
+              Github
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => handleProviderSignIn("google")}
+            >
+              <GoogleIcon />
+              Google
+            </Button>
           </div>
           <p className="px-8 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}

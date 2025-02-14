@@ -14,12 +14,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { signupSchema } from "@/lib/validators";
 import GoogleIcon from "../../google-icon";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 type SignUpFormValues = z.infer<typeof signupSchema>;
@@ -35,7 +33,6 @@ export default function SignUpPage() {
       confirmPassword: "F@nt4stic",
     },
   });
-  const router = useRouter();  
   const { signIn } = useAuthActions();
 
   const handleProviderSignIn = (provider: 'google' | 'github') => {
@@ -50,8 +47,7 @@ export default function SignUpPage() {
     };
 
     try {
-      signIn("password", { ...data, flow: "signUp" })
-      router.push("/workspace")
+      signIn("password", { ...data, flow: "signUp" });
     } catch (error: any) {
       form.setError("root", {
         type: "email",

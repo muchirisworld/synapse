@@ -19,7 +19,6 @@ import { signinSchema } from "@/lib/validators";
 import GoogleIcon from "../../google-icon";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 type SignInFormValues = z.infer<typeof signinSchema>;
 
@@ -31,7 +30,6 @@ export default function SignInPage() {
       password: "",
     },
   });
-  const router = useRouter();
   const { signIn } = useAuthActions();
 
   const handleProviderSignIn = (provider: 'google' | 'github') => {
@@ -40,8 +38,7 @@ export default function SignInPage() {
 
   const onSubmit = (values: SignInFormValues) => {
     try {
-      signIn("password", { ...values, flow: "signIn" })
-      router.push("/workspace")
+      signIn("password", { ...values, flow: "signIn" });
     } catch (error: any) {
       form.setError("root", {
         type: "email",

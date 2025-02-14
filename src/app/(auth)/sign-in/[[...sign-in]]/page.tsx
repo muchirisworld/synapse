@@ -31,7 +31,7 @@ export default function SignInPage() {
       password: "",
     },
   });
-  const roouter = useRouter();
+  const router = useRouter();
   const { signIn } = useAuthActions();
 
   const handleProviderSignIn = (provider: 'google' | 'github') => {
@@ -39,7 +39,16 @@ export default function SignInPage() {
   };
 
   const onSubmit = (values: SignInFormValues) => {
-
+    try {
+      signIn("password", { ...values, flow: "signIn" })
+      router.push("/workspace")
+    } catch (error: any) {
+      form.setError("root", {
+        type: "email",
+        message: error.message,
+      });
+      toast.error(error.message);
+    }
   };
 
   return (

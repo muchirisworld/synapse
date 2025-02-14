@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/providers/query-provider";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import { ThemeProvider } from "@/providers/theme-provider";
+import { Toaster } from "sonner";
 
 const manrope = Manrope({
   subsets: ["latin"]
@@ -20,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ConvexAuthNextjsServerProvider>
       <html lang="en" suppressHydrationWarning>
         <body
           className={manrope.className}
@@ -33,10 +34,11 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               {children}
+              <Toaster />
             </ThemeProvider>
           </QueryProvider>
         </body>
       </html>
-      </ClerkProvider>
+    </ConvexAuthNextjsServerProvider>
   );
 }

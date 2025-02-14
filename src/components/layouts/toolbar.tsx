@@ -1,5 +1,4 @@
 import React from 'react';
-import { UserButton } from '@clerk/nextjs';
 import {
   Tooltip,
   TooltipContent,
@@ -10,7 +9,6 @@ import { ModeToggle } from '@/components/elements/mode-toggle';
 import { Button } from '../ui/button';
 import ProfileCard from '../elements/profile-card';
 import Hint from '../elements/hint';
-import { currentUser } from '@clerk/nextjs/server';
 
 const Toolbar = () => {
   return (
@@ -25,7 +23,6 @@ const Toolbar = () => {
 export default Toolbar
 
 const ToolbarItems = async () => {
-    const user = await currentUser();
     return (
         <aside className='z-20 flex h-full flex-col'>
             <nav className="px-1 py-4">
@@ -49,7 +46,7 @@ const ToolbarItems = async () => {
                 </TooltipProvider>
     
                 <Hint
-                    label={user?.fullName ?? 'Unknown User'}
+                    label={"Rober Muchiri"}
                     align='center'
                     side='right'
                 >

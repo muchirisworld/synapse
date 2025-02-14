@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@auth/core": "^0.37.4",
-    "@clerk/nextjs": "^6.11.1",
     "@convex-dev/auth": "^0.0.80",
     "@convex-dev/react-query": "0.0.0-alpha.8",
     "@hookform/resolvers": "^4.0.0",

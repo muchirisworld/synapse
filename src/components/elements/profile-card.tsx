@@ -10,15 +10,13 @@ import {
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import AvatarButton from './avatar-button';
-import { currentUser, User } from '@clerk/nextjs/server';
+import { useAuthActions } from "@convex-dev/auth/react";
 import { PersonIcon, GearIcon, ExitIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import useConfirm from '@/hooks/use-confirm';
-import { useClerk, useUser } from '@clerk/nextjs';
 
 const ProfileCard = () => {
-    const { user } = useUser();
-    const { signOut } = useClerk();
+    const { signOut } = useAuthActions();
     const [ConfirmDialog, confirm] = useConfirm({
         title: "Are you sure?",
         message: "You will be signed out of your account when this action is completed"
@@ -27,7 +25,7 @@ const ProfileCard = () => {
     const handleSignOut = async () => {
         const ok = await confirm();
         if (!ok) return;
-        signOut({ redirectUrl: '/' });
+        signOut();
     }
 
   return (
@@ -42,8 +40,8 @@ const ProfileCard = () => {
             <DropdownMenuLabel className='flex items-center gap-2'>
                 <ProfileAvatar />
                 <div className="leading-tight">
-                    <h3 className="">{user?.emailAddresses[0].emailAddress}</h3>
-                    <p className="text-muted-foreground text-sm">{user?.fullName}</p>
+                    <h3 className="">developedbyrobbie@gmail.com</h3>
+                    <p className="text-muted-foreground text-sm">Robert Muchiri</p>
                 </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -77,13 +75,11 @@ const ProfileCard = () => {
 export default ProfileCard
 
 const ProfileAvatar = () => {
-    const { user } = useUser();
-
   return (
     <AvatarButton
-        alt={user?.fullName ?? ""}
+        alt={"Robert Muchiri"}
         fallback={"C"}
-        imageUrl={user?.imageUrl}
+        imageUrl={""}
         className='size-9'
     />
   )

@@ -28,11 +28,11 @@ export default function SignUpPage() {
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      firstName: "Robert",
+      lastName: "Muchiri",
+      email: "robbiemuchiri@gmail.com",
+      password: "F@nt4stic",
+      confirmPassword: "F@nt4stic",
     },
   });
   const router = useRouter();  
@@ -43,7 +43,22 @@ export default function SignUpPage() {
   };
 
   const onSubmit = (values: SignUpFormValues) => {
-    
+    const data = {
+      name: `${values.firstName} ${values.lastName}`,
+      email: values.email,
+      password: values.password
+    };
+
+    try {
+      signIn("password", { ...data, flow: "signUp" })
+      router.push("/workspace")
+    } catch (error: any) {
+      form.setError("root", {
+        type: "email",
+        message: error.message,
+      });
+      toast.error(error.message);
+    }
   };
 
   return (

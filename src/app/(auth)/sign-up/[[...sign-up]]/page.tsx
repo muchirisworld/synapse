@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import { useAuthActions } from "@convex-dev/auth/react";
 import { signupSchema } from "@/lib/validators";
 import GoogleIcon from "../../google-icon";
 import { useRouter } from "next/navigation";
@@ -34,10 +35,11 @@ export default function SignUpPage() {
       confirmPassword: "",
     },
   });
-  const router = useRouter();
-  
-  const getProviderLoginUrl = (provider: 'google' | 'github') => {
-    return process.env.NEXT_PUBLIC_BASE_URL + `/oauth2/authorization/${provider}`
+  const router = useRouter();  
+  const { signIn } = useAuthActions();
+
+  const handleProviderSignIn = (provider: 'google' | 'github') => {
+    signIn(provider)
   };
 
   const onSubmit = (values: SignUpFormValues) => {
@@ -156,18 +158,22 @@ export default function SignUpPage() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            {/* <Link href={getProviderLoginUrl('github')}> */}
-              <Button variant="outline" className="w-full">
-                <GitHubLogoIcon className="mr-2 h-4 w-4" />
-                Github
-              </Button>
-            {/* </Link> */}
-            {/* <Link href={getProviderLoginUrl('google')}> */}
-              <Button variant="outline" className="w-full">
-                <GoogleIcon />
-                Google
-              </Button>
-            {/* </Link> */}
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => handleProviderSignIn("github")}
+            >
+              <GitHubLogoIcon className="mr-2 h-4 w-4" />
+              Github
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => handleProviderSignIn("google")}
+            >
+              <GoogleIcon />
+              Google
+            </Button>
           </div>
           <p className="px-8 text-center text-sm text-muted-foreground">
             Already have an account?{" "}

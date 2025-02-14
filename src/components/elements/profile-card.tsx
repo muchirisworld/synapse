@@ -14,8 +14,11 @@ import { useAuthActions } from "@convex-dev/auth/react";
 import { PersonIcon, GearIcon, ExitIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import useConfirm from '@/hooks/use-confirm';
+import { useCurrentUser } from '@/hooks/use-user';
+import { Doc } from '../../../convex/_generated/dataModel';
 
 const ProfileCard = () => {
+    const { data: currentUser } = useCurrentUser();
     const { signOut } = useAuthActions();
     const [ConfirmDialog, confirm] = useConfirm({
         title: "Are you sure?",
@@ -34,14 +37,14 @@ const ProfileCard = () => {
 
     <DropdownMenu>
         <DropdownMenuTrigger>
-            <ProfileAvatar  />
+            <ProfileAvatar currentUser={currentUser!}  />
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' side='right'>
             <DropdownMenuLabel className='flex items-center gap-2'>
-                <ProfileAvatar />
+                <ProfileAvatar currentUser={currentUser!} />
                 <div className="leading-tight">
-                    <h3 className="">developedbyrobbie@gmail.com</h3>
-                    <p className="text-muted-foreground text-sm">Robert Muchiri</p>
+                    <h3 className="">{currentUser?.email}</h3>
+                    <p className="text-muted-foreground text-sm">{currentUser?.name}</p>
                 </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -72,14 +75,19 @@ const ProfileCard = () => {
   )
 }
 
-export default ProfileCard
+export default ProfileCard;
 
-const ProfileAvatar = () => {
+type ProfileAvatarProps = {
+    currentUser?: Doc<"users">
+}
+
+const ProfileAvatar = ({ currentUser }: ProfileAvatarProps) => {
+    const firstLetter = currentUser?.name?.charAt(0) || '';
   return (
     <AvatarButton
-        alt={"Robert Muchiri"}
-        fallback={"C"}
-        imageUrl={""}
+        alt={currentUser?.name!}
+        fallback={firstLetter}
+        imageUrl={currentUser?.image ?? firstLetter}
         className='size-9'
     />
   )

@@ -9,6 +9,7 @@ import { ModeToggle } from '@/components/elements/mode-toggle';
 import { Button } from '../ui/button';
 import ProfileCard from '../elements/profile-card';
 import Hint from '../elements/hint';
+import WorkspaceSwitcher from '../elements/workspace-switecher';
 
 const Toolbar = () => {
   return (
@@ -26,11 +27,7 @@ const ToolbarItems = async () => {
     return (
         <aside className='z-20 flex h-full flex-col'>
             <nav className="px-1 py-4">
-                <Button
-                    size={'icon'}
-                >
-                    P
-                </Button>
+                <WorkspaceSwitcher />
             </nav>
   
             <nav className='mt-auto grid gap-2 px-2 py-4'>

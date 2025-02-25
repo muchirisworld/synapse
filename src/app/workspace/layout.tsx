@@ -7,11 +7,13 @@ import {
     ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import Sidebar from '@/components/layouts/sidebar';
+import CreateChannel from '@/components/elements/create-channel';
 
 const WorspaceLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className='bg-muted/50'>
         <CreateWorkspace />
+        <CreateChannel />
 
         <div className="grid gap-4 grid-cols-[3rem_1fr] p-2">
             <Toolbar />

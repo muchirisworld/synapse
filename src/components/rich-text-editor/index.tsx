@@ -16,18 +16,14 @@ import EmojiPicker from '../elements/emoji-picker';
 const extensions = [StarterKit];
 
 type TextEditorProps = {
-    value: string;
-    onChange: (value: string) => void;
-    placeholder?: string;
-    onSend?: () => void;
+    onSend?: (content: string) => void;
     editorClassName?: string;
     maxHeight?: string;
     className?: string;
+    placeholder?: string;
 }
 
 const TextEditor = ({
-    value,
-    onChange,
     onSend,
     className,
     editorClassName,
@@ -38,21 +34,6 @@ const TextEditor = ({
     // Ref to store a timeout ID, initialized to null
     const editorUpdateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     
-    const onUpdate = useCallback(
-        ({ editor }: { editor: Editor }) => {
-            // If a timeout is already set, clear it to prevent multiple updates
-            if (editorUpdateTimeoutRef.current) {
-                clearTimeout(editorUpdateTimeoutRef.current);
-            }
-            // Set a new timeout to delay the execution of the onChange function
-            editorUpdateTimeoutRef.current = setTimeout(() => {
-                // Call the onChange function with the current HTML content of the editor
-                onChange(editor.getHTML());
-            }, 100); // Delay of 100ms to debounce rapid updates
-        },
-        [onChange]
-    );
-    
     const editor = useEditor({
         extensions: [
             ...extensions,
@@ -61,8 +42,6 @@ const TextEditor = ({
                 emptyEditorClass: 'is-editor-empty',
             })
         ],
-        content: value,
-        onUpdate: onUpdate,
         immediatelyRender: false,
         editorProps: {
             attributes: {
@@ -80,6 +59,14 @@ const TextEditor = ({
             }
         }, [editor]
     );
+
+    const handleSend = useCallback(() => {
+        if (editor && onSend) {
+            const content = editor.getHTML();
+            onSend(content);
+            editor.commands.clearContent();
+        }
+    }, [editor, onSend]);
 
   return (
     <div className={cn("rounded-lg border border-input flex flex-col overflow-hidden", className)}>
@@ -120,7 +107,7 @@ const TextEditor = ({
             <Button
                 size="icon"
                 className="rounded-full"
-                onClick={onSend}
+                onClick={handleSend}
                 disabled={!editor?.getText().trim()}
             >
                 <ArrowUpIcon className="h-4 w-4" />

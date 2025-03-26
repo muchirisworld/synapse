@@ -10,14 +10,12 @@ import { useParams } from 'next/navigation';
 
 const ChannelPage = () => {
     const { channelId } = useParams<{ channelId: string }>();
-    const [value, setValue] = useState("");
 
     const { data: channel, isLoading: channelLoading } = useGetChannel(channelId as Id<"channels">);
 
 
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        console.log(value);
+    const handleSubmit = (content: string) => {
+        console.log(content);
     }
 
     if (channelLoading) {
@@ -44,9 +42,7 @@ const ChannelPage = () => {
             <div className="flex-1"></div>
             <div className="p-2">
                 <TextEditor
-                    value={value}
-                    onChange={setValue}
-                    onSend={() => handleSubmit({ preventDefault: () => {} } as FormEvent<HTMLFormElement>)}
+                    onSend={handleSubmit}
                     className='max-h-[400px]'
                 />
             </div>

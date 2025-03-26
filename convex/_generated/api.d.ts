@@ -17,6 +17,7 @@ import type * as auth from "../auth.js";
 import type * as channel from "../channel.js";
 import type * as http from "../http.js";
 import type * as member from "../member.js";
+import type * as message from "../message.js";
 import type * as user from "../user.js";
 import type * as workspace from "../workspace.js";
 
@@ -33,6 +34,7 @@ declare const fullApi: ApiFromModules<{
   channel: typeof channel;
   http: typeof http;
   member: typeof member;
+  message: typeof message;
   user: typeof user;
   workspace: typeof workspace;
 }>;

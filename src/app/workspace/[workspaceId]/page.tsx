@@ -6,17 +6,11 @@ import { useChannelStore } from '@/store/channel';
 import React, { useEffect, useMemo } from 'react';
 import { Id } from '../../../../convex/_generated/dataModel';
 import { useGetWorkspaceById } from '@/hooks/use-get-workspaces';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { Loader, TriangleAlert } from 'lucide-react';
 
-type WorkspaceIdPageProps = {
-    params: {
-        workspaceId: string;
-    }
-}
-
-const WorkspaceIdPage = ({ params }: WorkspaceIdPageProps) => {
-    const { workspaceId } = params;
+const WorkspaceIdPage = () => {
+    const { workspaceId } = useParams<{ workspaceId: string }>();
     const { open, setOpen } = useChannelStore((state) => state);
     const router = useRouter();
 

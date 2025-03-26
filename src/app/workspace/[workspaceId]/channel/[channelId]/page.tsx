@@ -6,16 +6,10 @@ import { Id } from '../../../../../../convex/_generated/dataModel';
 import { Loader, TriangleAlert } from 'lucide-react';
 import ChannelHeader from '@/components/elements/channel-header';
 import TextEditor from '@/components/rich-text-editor';
+import { useParams } from 'next/navigation';
 
-type ChannelPageProps = {
-    params: {
-        workspaceId: string;
-        channelId: string;
-    };
-};
-
-const ChannelPage = ({ params }: ChannelPageProps) => {
-    const { channelId } = params;
+const ChannelPage = () => {
+    const { channelId } = useParams<{ channelId: string }>();
     const [value, setValue] = useState("");
 
     const { data: channel, isLoading: channelLoading } = useGetChannel(channelId as Id<"channels">);

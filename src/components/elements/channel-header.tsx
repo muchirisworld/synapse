@@ -17,6 +17,7 @@ import { Id } from '../../../convex/_generated/dataModel';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useCurrentMember } from '@/hooks/use-current-member';
+import useConfirm from '@/hooks/use-confirm';
 
 type ChannelHeaderProps = {
     title: string;
@@ -28,13 +29,17 @@ const ChannelHeader = ({ title }: ChannelHeaderProps) => {
     const [editOpen, setEditOpen] = useState(false);
     const { mutateAsync, isPending } = useDeleteChannel();
     const router = useRouter();
+    const [ConfirmDialog, confirm] = useConfirm({
+        title: "Are you sure?",
+        message: "This action is irreversible and will result in permanent loss of data!"
+    });
 
     const handleEditChannel = (value: boolean) => {
         if (member?.role !== "admin") return;
         setEditOpen(value);
     };
 
-    const handleDeleteChannel = () => {
+    const deleteChannel = () => {
         mutateAsync({
             channelId: channelId as Id<"channels">
         }, {
@@ -47,8 +52,16 @@ const ChannelHeader = ({ title }: ChannelHeaderProps) => {
             }
         });
     };
+    
+    const handleDeleteChannel = async () => {
+        const ok = await confirm();
+        if (!ok) return;
+        deleteChannel();
+    }
   return (
     <div className='border-b h-[49px] flex items-center px-4'>
+        <ConfirmDialog />
+
         <Dialog>
             <DialogTrigger asChild>
                 <Button

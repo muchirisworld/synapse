@@ -20,6 +20,7 @@ const ChannelPage = ({ params }: ChannelPageProps) => {
 
     const { data: channel, isLoading: channelLoading } = useGetChannel(channelId as Id<"channels">);
 
+
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         console.log(value);

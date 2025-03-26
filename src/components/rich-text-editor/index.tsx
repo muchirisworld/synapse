@@ -1,13 +1,15 @@
 "use client";
 
-import React, { Dispatch, HTMLAttributes, SetStateAction, useCallback, useRef } from 'react';
+import React, { Dispatch, HTMLAttributes, SetStateAction, useCallback, useRef, useState } from 'react';
 import { EditorContent, useEditor } from "@tiptap/react";
 import type { Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { ArrowUpIcon } from '@radix-ui/react-icons';
+import { ArrowUpIcon, LetterCaseCapitalizeIcon } from '@radix-ui/react-icons';
 import { Button } from '../ui/button';
+import Toolbar from './toolbar';
+import { Toggle } from '../ui/toggle';
 
 const extensions = [StarterKit];
 
@@ -27,6 +29,7 @@ const TextEditor = ({
     className,
     editorClassName
 }: TextEditorProps) => {
+    const [showToolbar, setShowToolbar] = useState(true);
     // Ref to store a timeout ID, initialized to null
     const editorUpdateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     
@@ -62,6 +65,9 @@ const TextEditor = ({
 
   return (
     <div className={cn("rounded-lg border border-input flex flex-col overflow-hidden", className)}>
+        {showToolbar && (
+            <Toolbar editor={editor} />
+        )}
       
         <div className="flex-1 min-h-0 overflow-hidden">
             <ScrollArea className="h-full">
@@ -75,7 +81,19 @@ const TextEditor = ({
         </div>
         
       <div className="p-2 flex items-center gap-2 bg-background pt-0">
-        <div className="flex-1" />
+        <div className="flex-1">
+            <div className="flex items-center gap-1">
+                <Toggle
+                    pressed={showToolbar}
+                    onPressedChange={setShowToolbar}
+                    size="sm"
+                    className="h-8 w-8"
+                >
+                    <LetterCaseCapitalizeIcon className="h-4 w-4" />
+                </Toggle>
+
+            </div>
+        </div>
         {onSend && (
             <Button
                 size="icon"

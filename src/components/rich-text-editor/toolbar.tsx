@@ -8,9 +8,9 @@ import {
     ListBulletIcon,
     QuoteIcon,
     StrikethroughIcon,
-    CodeIcon,
+    CodeIcon
 } from "@radix-ui/react-icons";
-import { UndoIcon, RedoIcon, ListOrderedIcon } from "lucide-react";
+import { UndoIcon, RedoIcon, ListOrderedIcon, CodeSquareIcon } from "lucide-react";
 import { ReactNode } from "react";
 
 const toolbarItemGroups = [
@@ -67,6 +67,13 @@ const toolbarItemGroups = [
                 action: (editor: Editor) => editor.chain().focus().toggleCode().run(),
                 isActive: (editor: Editor) => editor.isActive("code"),
                 canRun: (editor: Editor) => editor.can().chain().focus().toggleCode().run(),
+            },
+            {
+                icon: CodeSquareIcon,
+                tooltip: "Code Block",
+                action: (editor: Editor) => editor.chain().focus().toggleCodeBlock().run(),
+                isActive: (editor: Editor) => editor.isActive("codeBlock"),
+                canRun: (editor: Editor) => editor.can().chain().focus().toggleCodeBlock().run(),
             },
             {
                 icon: QuoteIcon,

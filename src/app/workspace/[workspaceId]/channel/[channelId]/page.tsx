@@ -47,6 +47,7 @@ const ChannelPage = () => {
                     value={value}
                     onChange={setValue}
                     onSend={() => handleSubmit({ preventDefault: () => {} } as FormEvent<HTMLFormElement>)}
+                    className='max-h-[400px]'
                 />
             </div>
         </div>

@@ -1,8 +1,9 @@
 "use client";
 
-import React, { Dispatch, HTMLAttributes, SetStateAction, useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { EditorContent, useEditor } from "@tiptap/react";
 import type { Editor } from "@tiptap/react";
+import Placeholder from "@tiptap/extension-placeholder";
 import StarterKit from "@tiptap/starter-kit";
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -16,9 +17,10 @@ const extensions = [StarterKit];
 type TextEditorProps = {
     value: string;
     onChange: (value: string) => void;
-    // onChange: Dispatch<SetStateAction<string>>;
+    placeholder?: string;
     onSend?: () => void;
     editorClassName?: string;
+    maxHeight?: string;
     className?: string;
 }
 
@@ -27,7 +29,9 @@ const TextEditor = ({
     onChange,
     onSend,
     className,
-    editorClassName
+    editorClassName,
+    maxHeight = "max-h-[400px]",
+    placeholder = "Type your message..."
 }: TextEditorProps) => {
     const [showToolbar, setShowToolbar] = useState(true);
     // Ref to store a timeout ID, initialized to null
@@ -49,14 +53,20 @@ const TextEditor = ({
     );
     
     const editor = useEditor({
-        extensions: extensions,
+        extensions: [
+            ...extensions,
+            Placeholder.configure({
+                placeholder: placeholder,
+                emptyEditorClass: 'is-editor-empty',
+            })
+        ],
         content: value,
         onUpdate: onUpdate,
         immediatelyRender: false,
         editorProps: {
             attributes: {
                 class: cn(
-                    "focus:outline-none focus-visible:outline-none [&>*:first-child]:mt-0 w-full h-full",
+                    "focus:outline-none focus-visible:outline-none [&>*:first-child]:mt-0 w-full h-full prose prose-sm dark:prose-invert text-sm",
                     editorClassName
                 ),
             },

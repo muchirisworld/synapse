@@ -53,7 +53,7 @@ const ChannelPage = () => {
     };
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full max-h-[calc(100vh-1rem)]">
             <ChannelHeader title={channel.name} />
 
             <MessageList

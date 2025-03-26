@@ -60,7 +60,7 @@ const MessageList = ({
     }, {} as Record<string, MessagesReturnProps>);
   return (
     // <div className="h-full overflow-y-auto px-6 py-4">
-    <div className="flex-1 flex flex-col-reverse pb-4 overflow-y-auto h-full">
+    <div className="flex-1 flex flex-col-reverse pb-4 overflow-y-auto">
         {Object.entries(groupedMessages || {}).map(([date, messages]) => (
             <div key={date} className="">
                 <div className="text-center my-2 relative">

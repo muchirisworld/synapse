@@ -1,11 +1,11 @@
 "use client";
 
 import { useGetChannel } from '@/hooks/use-get-channel';
-import React from 'react';
+import React, { FormEvent, useState } from 'react';
 import { Id } from '../../../../../../convex/_generated/dataModel';
 import { Loader, TriangleAlert } from 'lucide-react';
 import ChannelHeader from '@/components/elements/channel-header';
-import { Textarea } from '@/components/ui/textarea';
+import TextEditor from '@/components/rich-text-editor';
 
 type ChannelPageProps = {
     params: {
@@ -16,8 +16,14 @@ type ChannelPageProps = {
 
 const ChannelPage = ({ params }: ChannelPageProps) => {
     const { channelId } = params;
+    const [value, setValue] = useState("");
 
     const { data: channel, isLoading: channelLoading } = useGetChannel(channelId as Id<"channels">);
+
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        console.log(value);
+    }
 
     if (channelLoading) {
         return (
@@ -41,9 +47,12 @@ const ChannelPage = ({ params }: ChannelPageProps) => {
             <ChannelHeader title={channel.name} />
 
             <div className="flex-1"></div>
-
             <div className="p-2">
-                <Textarea />
+                <TextEditor
+                    value={value}
+                    onChange={setValue}
+                    onSend={() => handleSubmit({ preventDefault: () => {} } as FormEvent<HTMLFormElement>)}
+                />
             </div>
         </div>
     );

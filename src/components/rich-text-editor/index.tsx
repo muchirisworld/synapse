@@ -11,6 +11,7 @@ import { ArrowUpIcon, LetterCaseCapitalizeIcon } from '@radix-ui/react-icons';
 import { Button } from '../ui/button';
 import Toolbar from './toolbar';
 import { Toggle } from '../ui/toggle';
+import EmojiPicker from '../elements/emoji-picker';
 
 const extensions = [StarterKit];
 
@@ -72,6 +73,13 @@ const TextEditor = ({
             },
         },
     });
+    
+    const insertEmoji = useCallback((emoji: any) => {
+            if (editor) {
+                editor.commands.insertContent(emoji.native)
+            }
+        }, [editor]
+    );
 
   return (
     <div className={cn("rounded-lg border border-input flex flex-col overflow-hidden", className)}>
@@ -102,6 +110,10 @@ const TextEditor = ({
                     <LetterCaseCapitalizeIcon className="h-4 w-4" />
                 </Toggle>
 
+                <EmojiPicker
+                    triggerClassName="h-8 w-8" 
+                    onEmojiSelect={insertEmoji}
+                />
             </div>
         </div>
         {onSend && (

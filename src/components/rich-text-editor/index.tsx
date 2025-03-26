@@ -16,6 +16,9 @@ import EmojiPicker from '../elements/emoji-picker';
 const extensions = [StarterKit];
 
 type TextEditorProps = {
+    initialValue?: string;
+    handleCancel?: () => void;
+    isEditing?: boolean;
     onSend?: (content: string) => void;
     editorClassName?: string;
     maxHeight?: string;
@@ -24,6 +27,9 @@ type TextEditorProps = {
 }
 
 const TextEditor = ({
+    initialValue,
+    handleCancel,
+    isEditing,
     onSend,
     className,
     editorClassName,
@@ -31,8 +37,6 @@ const TextEditor = ({
     placeholder = "Type your message..."
 }: TextEditorProps) => {
     const [showToolbar, setShowToolbar] = useState(true);
-    // Ref to store a timeout ID, initialized to null
-    const editorUpdateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     
     const editor = useEditor({
         extensions: [
@@ -52,6 +56,10 @@ const TextEditor = ({
             },
         },
     });
+    
+    if (isEditing && editor) {
+        editor.commands.insertContent(initialValue || "");
+    }
     
     const insertEmoji = useCallback((emoji: any) => {
             if (editor) {
@@ -103,16 +111,28 @@ const TextEditor = ({
                 />
             </div>
         </div>
-        {onSend && (
-            <Button
-                size="icon"
-                className="rounded-full"
-                onClick={handleSend}
-                disabled={!editor?.getText().trim()}
-            >
-                <ArrowUpIcon className="h-4 w-4" />
-            </Button>
-        )}
+        <div className="flex items-center gap-2">
+            {isEditing && (
+                <Button
+                    variant={"secondary"}
+                    size={'sm'}
+                    onClick={handleCancel}
+                >
+                    Cancel
+                </Button>
+            )}
+            
+            {onSend && (
+                <Button
+                    size="icon"
+                    className="rounded-full"
+                    onClick={handleSend}
+                    disabled={!editor?.getText().trim()}
+                >
+                    <ArrowUpIcon className="h-4 w-4" />
+                </Button>
+            )}
+        </div>
       </div>
     </div>
   )

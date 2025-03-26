@@ -12,6 +12,8 @@ type UseGetMessagesProps = {
     parentMessageId?: Id<"messages">;
 };
 
+export type MessagesReturnProps = Exclude<typeof api.message.get._returnType, never[]>["page"];
+
 export const useGetMessages = ({
     channelId,
     conversationId,

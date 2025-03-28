@@ -4,7 +4,7 @@ import { Button } from '../ui/button';
 import { Doc } from '../../../convex/_generated/dataModel';
 import { ChevronDown, ListFilter, SquarePen } from 'lucide-react';
 import PreferencesModal from './preferences-modal';
-// import InviteModal from './invite-modal';
+import InviteModal from './invite-modal';
 
 type WorkspaceHeaderProps = {
     workspace: Doc<"workspaces">;
@@ -16,12 +16,12 @@ const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) => {
     const [inviteOpen, setInviteOpen] = useState(false);
   return (
     <>
-    {/* <InviteModal
+    <InviteModal
         open={inviteOpen}
         setOpen={setInviteOpen}
         name={workspace.name}
         joinCode={workspace.joinCode}
-    /> */}
+    />
 
     <PreferencesModal
         open={preferencesOpen}

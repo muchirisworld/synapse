@@ -9,7 +9,7 @@ import EmojiPicker from './emoji-picker';
 
 type ReactionsProps = {
     data: Array<
-        Omit<Doc<"reactions">, "messageId"> & {
+        Omit<Doc<"reactions">, "memberId"> & {
             count: number;
             memberIds: Id<"members">[];
         }

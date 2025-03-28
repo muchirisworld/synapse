@@ -26,7 +26,7 @@ const formarDateLabel = (dateStr: string) => {
     const date = new Date(dateStr);
     if (isToday(date)) return 'Today';
     if (isYesterday(date)) return 'Yesterday';
-    return format(date, 'EEEE, MMMM');
+    return format(date, 'EEEE, MMMM d');
 };
 
 const MessageList = ({
@@ -64,8 +64,8 @@ const MessageList = ({
         {Object.entries(groupedMessages || {}).map(([date, messages]) => (
             <div key={date} className="">
                 <div className="text-center my-2 relative">
-                    <hr className='absolute top-1/2 left--0 right-0 border-t border-muted-foreground' />
-                    <span className='relative inline-block px-4 py-1 rounded-full text-xs border border-muted-foreground shadow-sm'>
+                    <hr className='absolute top-1/2 left-0 right-0 border-t border-muted-foreground' />
+                    <span className='relative inline-block px-4 py-1 rounded-full text-xs bg-background border border-muted-foreground shadow-sm'>
                         {formarDateLabel(date)}
                     </span>
                 </div>
@@ -84,12 +84,9 @@ const MessageList = ({
                             id={message._id}
                             memberId={message.memberId}
                             authorImage={message.user.image}
-                            authorName={`${message.user.name}`}
+                            authorName={message.user.name}
                             isAuthor={message.memberId === currentMember?._id}
-                            reactions={message.reactions.map(reaction => ({
-                                ...reaction,
-                                memberId: reaction.memberIds[0], // Assuming the first memberId is used
-                            }))}
+                            reactions={message.reactions}
                             body={message.content}
                             updatedAt={message.updatedAt}
                             createdAt={message._creationTime}

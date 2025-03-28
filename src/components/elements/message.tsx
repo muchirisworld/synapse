@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Id, Doc } from '../../../convex/_generated/dataModel';
-import { format } from 'date-fns';
+import { format, isToday, isYesterday } from 'date-fns';
 import {
     Avatar,
     AvatarImage,
@@ -16,8 +16,13 @@ import { useDeleteMessage } from '@/hooks/use-delete-message';
 import { useToggleReaction } from '@/hooks/use-toggle-reaction';
 import Reactions from './reactions';
 import TextEditor from '../rich-text-editor';
+import Hint from './hint';
 // import { usePanel } from '@/hooks/use-panel';
 // import ThreadBar from './thread-bar';
+
+const formatFullTime = (date: Date) => {
+    return `${isToday(date) ? "Today" : isYesterday(date) ? "Yesterday" : format(date, "MMM d, yyyy")} at ${format(date, "h:mm:ss")}`;
+}
 
 type MessageProps = {
     id: Id<"messages">;
@@ -26,7 +31,7 @@ type MessageProps = {
     authorName?: string;
     isAuthor: boolean;
     reactions: Array<
-        Omit<Doc<"reactions">, "messageId"> & {
+        Omit<Doc<"reactions">, "memberId"> & {
             count: number;
             memberIds: Id<"members">[];
         }
@@ -118,14 +123,18 @@ const Message: React.FC<MessageProps> = ({
     if (isCompact) {
         return (
             <div className={cn(
-                'relative flex leading-tight flex-col gap-2 p-1.5 pl-8 pr-1.5 transition-all group',
+                'relative flex leading-tight flex-col gap-2 p-1.5 pl-10 pr-1.5 transition-all group',
                 isEditing ? 'bg-[#f2c74433]'
                 : 'hover:bg-muted'
             )}>
                 <div className="flex items-start gap-2">
-                    <button className='text-xs text-muted-foreground text-center hover:underline'>
-                        {format(new Date(createdAt), 'hh:mm a')}
-                    </button>
+                    <Hint
+                        label={formatFullTime(new Date(createdAt))}
+                    >
+                        <button className='text-xs text-muted-foreground text-center hover:underline'>
+                            {format(new Date(createdAt), 'hh:mm a')}
+                        </button>
+                    </Hint>
                 </div>
                 {isEditing ? (
                     <div className="w-full h-full">
@@ -181,7 +190,7 @@ const Message: React.FC<MessageProps> = ({
     )}>
         <div className="flex items-start gap-2">
             <button>
-                <Avatar className='size-5'>
+                <Avatar className='size-7 rounded-md'>
                     <AvatarImage src={authorImage} />
                     <AvatarFallback>
                         {avatarFallback}
@@ -200,13 +209,22 @@ const Message: React.FC<MessageProps> = ({
             ) : (
             <div className="flex flex-col w-full overflow-hidden">
                 <div className="text-base">
-                    <button onClick={() => {}} className='font-bold text-primary hover:underline'>{authorName}</button>
+                    <button
+                        onClick={() => {}}
+                        className='font-bold text-primary hover:underline'
+                    >
+                        {authorName}
+                    </button>
                     <span className="">
                         &nbsp;•&nbsp;
                     </span>
-                    <button className='text-xs text-muted-foreground hover:underline'>
-                        {format(new Date(createdAt), 'hh:mm a')}
-                    </button>
+                    <Hint
+                        label={formatFullTime(new Date(createdAt))}
+                    >
+                        <button className='text-xs text-muted-foreground hover:underline'>
+                            {format(new Date(createdAt), 'hh:mm a')}
+                        </button>
+                    </Hint>
                 </div>
                 <div className="flex flex-col w-full">
                     <div className="text-sm" dangerouslySetInnerHTML={{ __html: body }} />

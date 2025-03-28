@@ -2,7 +2,6 @@
 
 import React, { useCallback, useRef, useState } from 'react';
 import { EditorContent, useEditor } from "@tiptap/react";
-import type { Editor } from "@tiptap/react";
 import Placeholder from "@tiptap/extension-placeholder";
 import StarterKit from "@tiptap/starter-kit";
 import { cn } from '@/lib/utils';
@@ -46,6 +45,7 @@ const TextEditor = ({
                 emptyEditorClass: 'is-editor-empty',
             })
         ],
+        content: isEditing ? initialValue : "",
         immediatelyRender: false,
         editorProps: {
             attributes: {
@@ -56,10 +56,6 @@ const TextEditor = ({
             },
         },
     });
-    
-    if (isEditing && editor) {
-        editor.commands.insertContent(initialValue || "");
-    }
     
     const insertEmoji = useCallback((emoji: any) => {
             if (editor) {

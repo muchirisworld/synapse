@@ -108,7 +108,7 @@ const Message: React.FC<MessageProps> = ({
     const handleToggleReaction = (value: any) => {
         toggleReaction({
             messageId: id,
-            value: value.native,
+            value: value,
         }, {
             onError: () => {
                 toast.error('Failed to add reaction');

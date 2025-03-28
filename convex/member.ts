@@ -1,15 +1,11 @@
 import { v } from "convex/values";
 import { query, QueryCtx } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { Id } from "./_generated/dataModel";
 
-const populateUser = (ctx: QueryCtx, userId: string) => {
-    return ctx.db
-        .query("users")
-        .filter((q) =>
-            q.eq("userId", userId)
-        )
-        .unique();
-}
+const populateUser = async (ctx: QueryCtx, userId: Id<"users">) => {
+    return ctx.db.get(userId);
+};
 
 export const get = query({
     args: {

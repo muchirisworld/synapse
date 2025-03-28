@@ -35,7 +35,7 @@ const EmojiPicker = ({
             </button>
         </PopoverTrigger>
         <PopoverContent 
-            className={cn("w-auto p-0", className)} 
+            className={"w-full h-full p-0"}
             align={align}
             side={side}
         >

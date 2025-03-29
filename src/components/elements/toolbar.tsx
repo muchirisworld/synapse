@@ -27,7 +27,7 @@ const Toolbar = ({
     <div className='absolute top-0 right-5'>
         <div className="group-hover:opacity-100 opacity-0 transition-opacity bg-background border rounded-md shadow-sm p-1">
             <EmojiPicker
-                onEmojiSelect={handleReaction}
+                onEmojiSelect={(value) => handleReaction(value.native) }
                 className='size-7'
                 side='left'
                 align='start'

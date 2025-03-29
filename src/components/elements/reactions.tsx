@@ -50,7 +50,7 @@ const Reactions = ({
             </button>
         ))}
         <EmojiPicker
-            onEmojiSelect={(emoji) => onChange(emoji)}
+            onEmojiSelect={(emoji) => onChange(emoji.native)}
             align='start'
             side='bottom'
         />

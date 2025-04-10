@@ -7,6 +7,7 @@ import { Id } from '../../../convex/_generated/dataModel';
 import { useParams } from 'next/navigation';
 import { useCurrentMember } from '@/hooks/use-current-member';
 import { MessagesReturnProps } from '@/hooks/use-get-messages';
+import { Loader } from 'lucide-react';
 
 const TIMETHRESHOLD = 5;
 
@@ -98,6 +99,34 @@ const MessageList = ({
                             threadTimestamp={message.threadTimestamp}
                         />)
                 })}
+                <div
+                    className="h-1"
+                    ref={(el) => {
+                        if (el) {
+                            const observer = new IntersectionObserver(
+                                ([entry]) => {
+                                    if (entry.isIntersecting && canLoadMore) {
+                                        loadMore();
+                                    }
+                                },
+                                { threshold: 1.0 }
+                            );
+
+                            observer.observe(el);
+                            return () => {
+                                observer.disconnect();
+                            };
+                        }
+                    }}
+                />
+                {isLoadingMore && (
+                    <div className="text-center my-2 relative">
+                        <hr className='absolute top-1/2 left-0 right-0 border-t border-muted-foreground' />
+                        <span className='relative inline-block px-4 py-1 rounded-full text-xs bg-background border border-muted-foreground shadow-sm'>
+                            <Loader className="size-4 animate-spin" />
+                        </span>
+                    </div>
+                )}
             </div>
         ))}
     </div>

@@ -92,7 +92,7 @@ const Thread: React.FC<ThreadProps> = ({ messageId, onClose }) => {
     }
 
     return (
-        <div className='h-full flex flex-col pb-2'>
+        <div className='h-full flex flex-col pb-2 max-h-[calc(100vh-1rem)]'>
             <div className="flex justify-between items-center h-[49px] px-4 border-b">
                 <p className="text-lg font-bold">Thread</p>
                 <Button
@@ -104,31 +104,29 @@ const Thread: React.FC<ThreadProps> = ({ messageId, onClose }) => {
                 </Button>
             </div>
 
-            <div className="flex-1 flex flex-col-reverse overflow-y-auto">
-                <div className="mt-4">
-                    <Message
-                        hideThreadButton
-                        memberId={message.memberId}
-                        authorImage={message.user.image}
-                        isAuthor={message.memberId === currentMember?._id}
-                        body={message.content}
-                        createdAt={message._creationTime}
-                        updatedAt={message.updatedAt}
-                        id={message._id}
-                        reactions={message.reactions}
-                        isEditing={editingId === message._id}
-                        setEditingId={setEditingId}
-                        threadCount={message.threadCount}
-                    />
-                    <MessageList
-                        canLoadMore={status === 'CanLoadMore'}
-                        data={messages}
-                        isLoadingMore={status === 'LoadingMore'}
-                        loadMore={loadMore}
-                        variant='thread'
-                    />
-                </div>
+            <div className="flex-1 flex flex-col-reverse pb-4 overflow-y-auto">
+                <MessageList
+                    canLoadMore={status === 'CanLoadMore'}
+                    data={messages}
+                    isLoadingMore={status === 'LoadingMore'}
+                    loadMore={loadMore}
+                    variant='thread'
+                />
                 
+                <Message
+                    hideThreadButton
+                    memberId={message.memberId}
+                    authorImage={message.user.image}
+                    isAuthor={message.memberId === currentMember?._id}
+                    body={message.content}
+                    createdAt={message._creationTime}
+                    updatedAt={message.updatedAt}
+                    id={message._id}
+                    reactions={message.reactions}
+                    isEditing={editingId === message._id}
+                    setEditingId={setEditingId}
+                    threadCount={message.threadCount}
+                />
             </div>
             <div className="px-2">
                 <TextEditor

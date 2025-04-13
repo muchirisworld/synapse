@@ -43,23 +43,25 @@ const Conversation = ({ id }: ConversationProps) => {
     }
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full max-h-[calc(100vh-1rem)]">
             <ConversationHeader
                 title={member?.user.name!}
                 memberImage={member?.user.image}
                 onClick={() => {}}
             />
 
-            <MessageList
-                data={messages}
-                variant="conversation"
-                memberImage={member?.user.image}
-                memberName={member?.user.name}
-                canLoadMore={status === 'CanLoadMore'}
-                isLoadingMore={status === 'LoadingMore'}
-                loadMore={loadMore}
-                
-            />
+            <div className="flex-1 flex flex-col-reverse pb-4 overflow-y-auto">
+                <MessageList
+                    data={messages}
+                    variant="conversation"
+                    memberImage={member?.user.image}
+                    memberName={member?.user.name}
+                    canLoadMore={status === 'CanLoadMore'}
+                    isLoadingMore={status === 'LoadingMore'}
+                    loadMore={loadMore}
+                    
+                />
+            </div>
             
             <div className="p-2">
                 <TextEditor

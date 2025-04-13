@@ -56,14 +56,16 @@ const ChannelPage = () => {
         <div className="flex flex-col h-full max-h-[calc(100vh-1rem)]">
             <ChannelHeader title={channel.name} />
 
-            <MessageList
-                canLoadMore={status === 'CanLoadMore'}
-                data={results}
-                isLoadingMore={status === 'LoadingMore'}
-                loadMore={loadMore}
-                channelName={channel.name}
-                channelCreationTime={channel._creationTime}
-            />
+            <div className="flex-1 flex flex-col-reverse pb-4 overflow-y-auto">
+                <MessageList
+                    canLoadMore={status === 'CanLoadMore'}
+                    data={results}
+                    isLoadingMore={status === 'LoadingMore'}
+                    loadMore={loadMore}
+                    channelName={channel.name}
+                    channelCreationTime={channel._creationTime}
+                />
+            </div>
 
             <div className="p-2">
                 <TextEditor

@@ -11,8 +11,9 @@ import { useCurrentMember } from '@/hooks/use-current-member';
 import { useParams } from 'next/navigation';
 import { useCreateMessage } from '@/hooks/use-create-message';
 import { toast } from 'sonner';
-import { differenceInMinutes, format } from 'date-fns';
+import { format } from 'date-fns';
 import TextEditor from '../rich-text-editor';
+import MessageList from './message-list';
 
 type ThreadProps = {
     messageId: Id<"messages">;
@@ -20,30 +21,18 @@ type ThreadProps = {
 }
 
 const Thread: React.FC<ThreadProps> = ({ messageId, onClose }) => {
-    const [editorKey, setEditorKey] = useState(0);
-    const [replyMessage, setReplyMessage] = useState("");
     const [editingId, setEditingId] = useState<Id<"messages"> | null>(null);
 
     const { workspaceId, channelId } = useParams<{ workspaceId: string, channelId: string }>();
     const { data: currentMember } = useCurrentMember(workspaceId as Id<"workspaces">);
     const { mutateAsync: replyMessageMutation } = useCreateMessage();
     const { data: message, isLoading: isLoadingMessage } = useGetMessage(messageId);
-    const { results: messagesData, isLoading: messagesLoading } = useGetMessages({
+    const { results: messages, status, loadMore, isLoading: messagesLoading } = useGetMessages({
       channelId: channelId as Id<"channels">,
       parentMessageId: messageId
     });
 
-    const messages = messagesData as MessagesReturnProps;
-    
-    const groupedMessages = messages.reduce((acc, message) => {
-        const date = new Date(message._creationTime);
-        const dateKey = format(date, 'yyyy-MM-dd');
-        if (!acc[dateKey]) {
-            acc[dateKey] = [];
-        }
-        acc[dateKey].unshift(message);
-        return acc;
-    }, {} as Record<string, MessagesReturnProps>);
+    // const messages = messagesData as MessagesReturnProps;
 
     if (isLoadingMessage) {
         return (
@@ -96,10 +85,6 @@ const Thread: React.FC<ThreadProps> = ({ messageId, onClose }) => {
             parentMessageId: messageId,
             content
         }, {
-            onSuccess: () => {
-                setReplyMessage("");
-                setEditorKey((prev) => prev + 1);
-            },
             onError: () => {
               toast.error('Failed to create message');
             }
@@ -118,72 +103,37 @@ const Thread: React.FC<ThreadProps> = ({ messageId, onClose }) => {
                     <X className='size-5 stroke-[1.5]' />
                 </Button>
             </div>
-            <div className="flex-1 flex flex-col-reverse pb-4 overflow-y-auto">
 
-                {/* start here */}
-
-                {Object.entries(groupedMessages || {}).map(([date, messages]) => (
-                    <div key={date} className="">
-                        <div className="text-center my-2 relative">
-                            <hr className='absolute top-1/2 left--0 right-0 border-t border-muted-foreground' />
-                            <span className='relative inline-block px-4 py-1 rounded-full text-xs border border-muted-foreground shadow-sm'>
-                                {format(new Date(date), 'MMM dd, yyyy')}
-                            </span>
-                        </div>
-                        {messages.map((message, index) => {
-                            const prevMessage = messages[index - 1];
-                            const isCompact =
-                                prevMessage &&
-                                prevMessage.memberId === message.memberId &&
-                                differenceInMinutes(
-                                    new Date(message._creationTime),
-                                    new Date(prevMessage._creationTime)
-                                ) < 5;
-                            return (
-                                <div key={message._id} className="mb-2">
-                                    <Message
-                                        hideThreadButton
-                                        memberId={message.memberId}
-                                        authorImage={message.user.image}
-                                        isAuthor={message.memberId === currentMember?._id}
-                                        body={message.content}
-                                        createdAt={message._creationTime}
-                                        updatedAt={message.updatedAt}
-                                        id={message._id}
-                                        reactions={message.reactions}
-                                        isEditing={editingId === message._id}
-                                        setEditingId={setEditingId}
-                                        isCompact={isCompact}
-                                        threadCount={message.threadCount}
-                                    />
-                                </div>
-                            )
-                        })}
-                    </div>
-                ))}
-
-                {/* end here */}
-
-                <Message
-                    hideThreadButton
-                    memberId={message.memberId}
-                    authorImage={message.user.image}
-                    isAuthor={message.memberId === currentMember?._id}
-                    body={message.content}
-                    createdAt={message._creationTime}
-                    updatedAt={message.updatedAt}
-                    id={message._id}
-                    reactions={message.reactions}
-                    isEditing={editingId === message._id}
-                    setEditingId={setEditingId}
-                    threadCount={message.threadCount}
-                />
+            <div className="flex-1 flex flex-col-reverse overflow-y-auto">
+                <div className="mt-4">
+                    <Message
+                        hideThreadButton
+                        memberId={message.memberId}
+                        authorImage={message.user.image}
+                        isAuthor={message.memberId === currentMember?._id}
+                        body={message.content}
+                        createdAt={message._creationTime}
+                        updatedAt={message.updatedAt}
+                        id={message._id}
+                        reactions={message.reactions}
+                        isEditing={editingId === message._id}
+                        setEditingId={setEditingId}
+                        threadCount={message.threadCount}
+                    />
+                    <MessageList
+                        canLoadMore={status === 'CanLoadMore'}
+                        data={messages}
+                        isLoadingMore={status === 'LoadingMore'}
+                        loadMore={loadMore}
+                        variant='thread'
+                    />
+                </div>
+                
             </div>
             <div className="px-2">
                 <TextEditor
                     onSend={handleReplyMessage}
                     isEditing={false}
-                    initialValue={replyMessage}
                 />
             </div>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Id, Doc } from '../../../convex/_generated/dataModel';
 import { format, isToday, isYesterday } from 'date-fns';
 import {
@@ -17,8 +17,8 @@ import { useToggleReaction } from '@/hooks/use-toggle-reaction';
 import Reactions from './reactions';
 import TextEditor from '../rich-text-editor';
 import Hint from './hint';
-// import { usePanel } from '@/hooks/use-panel';
-// import ThreadBar from './thread-bar';
+import { usePanel } from '@/hooks/use-panel';
+import ThreadBar from './thread-bar';
 
 const formatFullTime = (date: Date) => {
     return `${isToday(date) ? "Today" : isYesterday(date) ? "Yesterday" : format(date, "MMM d, yyyy")} at ${format(date, "h:mm:ss")}`;
@@ -68,8 +68,7 @@ const Message: React.FC<MessageProps> = ({
     const { mutateAsync: deleteMessage, isPending: isDeletingMessage } = useDeleteMessage();
     const { mutateAsync: toggleReaction, isPending: isTogglingReaction } = useToggleReaction();
     
-    // const { parentMessageId, onOpenMessage, onCloseMessage } = usePanel();
-    const isPending = isUpdatingMessage;
+    const { parentMessageId, onOpenMessage, onClose } = usePanel();
 
     const handleUpdateMessage = (content: string) => {
         updateMessage({
@@ -94,10 +93,9 @@ const Message: React.FC<MessageProps> = ({
             onSuccess: () => {
                 toast.success('Message deleted');
 
-                // TODO: Close thread if open
-                // if (parentMessageId === id) {
-                //     onCloseMessage();
-                // }
+                if (parentMessageId === id) {
+                    onClose();
+                }
             },
             onError: () => {
                 toast.error('Failed to delete message');
@@ -158,11 +156,11 @@ const Message: React.FC<MessageProps> = ({
                             onChange={handleToggleReaction}
                             // isPending={isTogglingReaction}
                         />
-                        {/* <ThreadBar
+                        <ThreadBar
                             count={threadCount}
                             timestamp={threadTimestamp}
                             onClick={() => onOpenMessage(id)}
-                        /> */}
+                        />
                     </div>
                 )}
                 {!isEditing && (
@@ -170,7 +168,7 @@ const Message: React.FC<MessageProps> = ({
                         isAuthor={isAuthor}
                         isPending={false}
                         handleEdit={() => setEditingId(id)}
-                        // handleThread={() => onOpenMessage(id)}
+                        handleThread={() => onOpenMessage(id)}
                         handleDelete={handleDeleteMessage}
                         handleReaction={handleToggleReaction}
                         hideThreadButton={hideThreadButton}
@@ -238,11 +236,11 @@ const Message: React.FC<MessageProps> = ({
                         onChange={handleToggleReaction}
                         // isPending={isTogglingReaction}
                     />
-                    {/* <ThreadBar
+                    <ThreadBar
                         count={threadCount}
                         timestamp={threadTimestamp}
                         onClick={() => onOpenMessage(id)}
-                    /> */}
+                    />
                 </div>
             </div>
             )}
@@ -252,7 +250,7 @@ const Message: React.FC<MessageProps> = ({
                 isAuthor={isAuthor}
                 isPending={false}
                 handleEdit={() => setEditingId(id)}
-                // handleThread={() => onOpenMessage(id)}
+                handleThread={() => onOpenMessage(id)}
                 handleDelete={handleDeleteMessage}
                 handleReaction={handleToggleReaction}
                 hideThreadButton={hideThreadButton}

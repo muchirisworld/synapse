@@ -12,6 +12,8 @@ import Sidebar from '@/components/layouts/sidebar';
 import CreateChannel from '@/components/elements/create-channel';
 import { usePanel } from '@/hooks/use-panel';
 import { Loader } from 'lucide-react';
+import Thread from '@/components/elements/thread';
+import { Id } from '../../../convex/_generated/dataModel';
 
 const WorspaceLayout = ({ children }: { children: ReactNode }) => {
     const { parentMessageId, onClose } = usePanel();
@@ -45,19 +47,10 @@ const WorspaceLayout = ({ children }: { children: ReactNode }) => {
                                 minSize={20}
                             >
                             {parentMessageId ? (
-                                // <Thread
-                                //     messageId={parentMessageId as Id<"messages">}
-                                //     onClose={onClose}
-                                // />
-                                <p className='text-muted-foreground text-sm text-center'>
-                                    Thread panel is under construction.
-                                    <br />
-                                    Please check back later.
-                                    <br />
-                                    <span className='text-xs text-muted-foreground/50'>
-                                        (Message ID: {parentMessageId})
-                                    </span>
-                                </p>
+                                <Thread
+                                    messageId={parentMessageId as Id<"messages">}
+                                    onClose={onClose}
+                                />
                             ) : (
                                 <div className="flex h-full items-center justify-center">
                                     <Loader className='shrink-0 animate-spin size-5 text-muted-foreground' />

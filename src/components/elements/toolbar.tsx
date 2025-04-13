@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '../ui/button';
-import { MessageSquareIcon, SmileIcon, Pencil } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import { TrashIcon, ChatBubbleIcon } from '@radix-ui/react-icons';
 import EmojiPicker from './emoji-picker';
 
@@ -8,7 +8,7 @@ type ToolbarProps = {
     isAuthor: boolean;
     isPending: boolean;
     handleEdit: () => void;
-    // handleThread: () => void;
+    handleThread: () => void;
     handleDelete: () => void;
     handleReaction: (value: string) => void;
     hideThreadButton?: boolean;
@@ -18,7 +18,7 @@ const Toolbar = ({
     isAuthor,
     isPending,
     handleEdit,
-    // handleThread,
+    handleThread,
     handleDelete,
     handleReaction,
     hideThreadButton,
@@ -39,7 +39,7 @@ const Toolbar = ({
                 size='icon'
                 className='size-7'
                 disabled={isPending}
-                // onClick={handleThread}
+                onClick={handleThread}
             >
                 <ChatBubbleIcon className='size-2' />
             </Button>}

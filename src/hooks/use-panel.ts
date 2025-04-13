@@ -1,3 +1,5 @@
+"use client";
+
 import { useParentMessageId } from "@/store/use-parent-message-id";
 
 export const usePanel = () => {

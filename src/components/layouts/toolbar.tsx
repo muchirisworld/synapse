@@ -6,7 +6,6 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip';
 import { ModeToggle } from '@/components/elements/mode-toggle';
-import { Button } from '../ui/button';
 import ProfileCard from '../elements/profile-card';
 import Hint from '../elements/hint';
 import WorkspaceSwitcher from '../elements/workspace-switecher';
@@ -23,7 +22,7 @@ const Toolbar = () => {
 
 export default Toolbar
 
-const ToolbarItems = async () => {
+const ToolbarItems = () => {
     return (
         <aside className='z-20 flex h-full flex-col'>
             <nav className="px-1 py-4">

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ReactNode } from 'react';
 import CreateWorkspace from '@/components/elements/create-workspace';
 import Toolbar from '@/components/layouts/toolbar';
@@ -8,8 +10,14 @@ import {
 } from "@/components/ui/resizable";
 import Sidebar from '@/components/layouts/sidebar';
 import CreateChannel from '@/components/elements/create-channel';
+import { usePanel } from '@/hooks/use-panel';
+import { Loader } from 'lucide-react';
 
 const WorspaceLayout = ({ children }: { children: ReactNode }) => {
+    const { parentMessageId, onClose } = usePanel();
+
+    const showPanel = !!parentMessageId;
+
   return (
     <div className='bg-muted/50'>
         <CreateWorkspace />
@@ -28,6 +36,37 @@ const WorspaceLayout = ({ children }: { children: ReactNode }) => {
                     <ResizablePanel minSize={20}>
                         {children}
                     </ResizablePanel>
+
+                    {showPanel && (
+                        <>
+                            <ResizableHandle className="bg-muted/50" />
+                            <ResizablePanel
+                                defaultSize={29}
+                                minSize={20}
+                            >
+                            {parentMessageId ? (
+                                // <Thread
+                                //     messageId={parentMessageId as Id<"messages">}
+                                //     onClose={onClose}
+                                // />
+                                <p className='text-muted-foreground text-sm text-center'>
+                                    Thread panel is under construction.
+                                    <br />
+                                    Please check back later.
+                                    <br />
+                                    <span className='text-xs text-muted-foreground/50'>
+                                        (Message ID: {parentMessageId})
+                                    </span>
+                                </p>
+                            ) : (
+                                <div className="flex h-full items-center justify-center">
+                                    <Loader className='shrink-0 animate-spin size-5 text-muted-foreground' />
+                                </div>
+                            )}
+                            </ResizablePanel>
+                        </>
+                    )}
+
                 </ResizablePanelGroup>
             </div>
         </div>

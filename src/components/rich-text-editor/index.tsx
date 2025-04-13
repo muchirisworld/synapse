@@ -73,7 +73,7 @@ const TextEditor = ({
     }, [editor, onSend]);
 
   return (
-    <div className={cn("rounded-lg border border-input flex flex-col overflow-hidden", className)}>
+    <div className={cn("rounded-lg border bg-background border-input flex flex-col overflow-hidden", className)}>
         {showToolbar && (
             <Toolbar editor={editor} />
         )}
@@ -89,7 +89,7 @@ const TextEditor = ({
             </ScrollArea>
         </div>
         
-      <div className="p-2 flex items-center gap-2 bg-background pt-0">
+      <div className="p-2 flex items-center gap-2 pt-0">
         <div className="flex-1">
             <div className="flex items-center gap-1">
                 <Toggle

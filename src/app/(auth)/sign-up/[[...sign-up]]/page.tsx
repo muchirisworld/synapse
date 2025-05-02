@@ -173,6 +173,7 @@ export default function SignUpPage() {
               variant="outline"
               className="w-full"
               onClick={() => handleProviderSignIn("github")}
+              disabled
             >
               <GitHubLogoIcon className="mr-2 h-4 w-4" />
               Github
@@ -181,6 +182,7 @@ export default function SignUpPage() {
               variant="outline"
               className="w-full"
               onClick={() => handleProviderSignIn("google")}
+              disabled
             >
               <GoogleIcon />
               Google
